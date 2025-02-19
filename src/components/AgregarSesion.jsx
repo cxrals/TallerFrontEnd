@@ -2,10 +2,13 @@ import React, { useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { agregarSesiones } from "../features/sesionesSlice";
+import { spinnerCargando } from "../features/spinnerSlice";
+import Spinner from "./Spinner";
 
 const AgregarSesion = () => {
     const movetrack = 'https://movetrack.develotion.com'
     const dispatch = useDispatch();
+    const cargando = useSelector(state => state.spinner.loading)
     const campoActividad = useRef(null);
     const campoTiempo = useRef(null);
     const campoFecha = useRef(null);
@@ -14,6 +17,7 @@ const AgregarSesion = () => {
     const actividades = useSelector(state => state.actividades.listaActividades);
 
     const agregarSesion = () => {
+        dispatch(spinnerCargando(true))
         const bodyData = {
             "idActividad": campoActividad.current.value,
             "idUsuario": localStorage.getItem('userId'),
@@ -35,11 +39,12 @@ const AgregarSesion = () => {
         .then(response => response.json())
         .then(data => {
             console.log(data);
+            dispatch(spinnerCargando(false))
             const sesion = {
                 "id": data.idRegistro,
                 "idActividad": Number(campoActividad.current.value),
                 "idUsuario": localStorage.getItem('userId'),
-                "tiempo": campoTiempo.current.value,
+                "tiempo": Number(campoTiempo.current.value),
                 "fecha": campoFecha.current.value
             }
             dispatch(agregarSesiones(sesion));
@@ -47,12 +52,13 @@ const AgregarSesion = () => {
         })
         .catch(error => {
             console.error('Error:', error);
+            dispatch(spinnerCargando(false))
             setMensaje('Error en la conexión');
         });
     }
 
     return (
-        <div className="card">
+        <div className="card mt-4">
             <h5 className="card-header">Agregar Sesión de Ejercicio</h5>
             <div className="card-body">
                 <div className="row">
@@ -104,6 +110,7 @@ const AgregarSesion = () => {
                             value="Agregar"
                             onClick={agregarSesion}
                         />
+                        {cargando ? <Spinner /> : null}
                     </div>
                 </div>
             </div>
