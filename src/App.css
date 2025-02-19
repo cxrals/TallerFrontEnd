@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  background-color: #E7E9F0;
+  background-color: #e7e9f0;
 }
 
 .App-logo {
@@ -33,20 +33,21 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 .card-header {
-  background-color: #3A3379 !important;
+  background-color: #3a3379 !important;
   color: white !important;
 }
 
 .numeroTotales {
   font-size: 8em;
   font-weight: bold;
-  color: #3A3379; 
+  color: #3a3379;
 }
 
 .evolucionPersonal {
@@ -54,8 +55,21 @@
 }
 
 .evolucionPersonalTexto {
-    font-size: xxx-large;
-    font-weight: bold;
-    margin-inline: auto;
-    color: #3A3379;
+  font-size: xxx-large;
+  font-weight: bold;
+  margin-inline: auto;
+  color: #3a3379;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0.5;
+  transform: translate(-50%, -50%);
+}
+
+.navbar-link {
+  text-decoration: inherit;
+  color: inherit;
 }
