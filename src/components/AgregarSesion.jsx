@@ -13,6 +13,7 @@ const AgregarSesion = () => {
     const campoTiempo = useRef(null);
     const campoFecha = useRef(null);
     const [mensaje, setMensaje] = useState(null)
+    const [botonAgregar, setBotonAgregar] = useState(false);
 
     const actividades = useSelector(state => state.actividades.listaActividades);
 
@@ -57,6 +58,10 @@ const AgregarSesion = () => {
         });
     }
 
+    const validar = e => {
+        campoActividad.current.value && campoTiempo.current.value && campoFecha.current.value ? setBotonAgregar(true) : setBotonAgregar(false);
+    }
+
     return (
         <div className="card mt-4">
             <h5 className="card-header">Agregar Sesión de Ejercicio</h5>
@@ -70,6 +75,7 @@ const AgregarSesion = () => {
                                 id="actividad"
                                 required
                                 ref={campoActividad}
+                                onChange={validar}
                             >
                                 {actividades.map(actividad => (
                                     <option key={actividad.id} value={actividad.id}>{actividad.nombre}</option>
@@ -86,6 +92,7 @@ const AgregarSesion = () => {
                                 id="tiempo"
                                 required
                                 ref={campoTiempo}
+                                onChange={validar}
                             />
                         </div>
                     </div>
@@ -100,6 +107,7 @@ const AgregarSesion = () => {
                                 max={new Date().toISOString().split("T")[0]}
                                 defaultValue={new Date().toISOString().split("T")[0]}
                                 required
+                                onChange={validar}
                             />
                         </div>
                     </div>
@@ -109,6 +117,7 @@ const AgregarSesion = () => {
                             className="btn btn-primary mt-4"
                             value="Agregar"
                             onClick={agregarSesion}
+                            disabled={!botonAgregar}
                         />
                         {cargando ? <Spinner /> : null}
                     </div>
