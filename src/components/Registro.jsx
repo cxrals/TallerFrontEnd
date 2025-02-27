@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from "react-router";
 import { guardarPaises } from "../features/paisesSlice";
@@ -12,6 +12,7 @@ const Registro = () => {
   const password = useRef(null);
   const paisSeleccionado = useRef(null);
   const paises = useSelector(state => state.paises.listaPaises);
+  const [botonRegistro, setBotonRegistro] = useState(false)
 
   useEffect(() => {
     fetch(`${movetrack}/paises.php`, {
@@ -55,6 +56,10 @@ const Registro = () => {
       });
   };
 
+  const validar = () => {
+    usuario.current.value && password.current.value && paisSeleccionado.current.value ? setBotonRegistro(true) : setBotonRegistro(false)
+  }
+
   return (
     <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
       <div className="card p-4 shadow-sm" style={{ width: "400px" }}>
@@ -67,6 +72,7 @@ const Registro = () => {
               className="form-control"
               ref={usuario}
               required
+              onChange={validar}
             />
           </div>
           <div className="mb-3">
@@ -76,11 +82,17 @@ const Registro = () => {
               className="form-control"
               ref={password}
               required
+              onChange={validar}
             />
           </div>
           <div className="mb-3">
             <label className="form-label">País</label>
-            <select className="form-select" required ref={paisSeleccionado}>
+            <select 
+              className="form-select" 
+              required 
+              ref={paisSeleccionado}
+              onChange={validar}
+            >
               <option selected>Selecciona un país</option>
               {paises.map((pais) => (
                 <option key={pais.id} value={pais.id}>
@@ -94,6 +106,7 @@ const Registro = () => {
             className="btn btn-primary w-100"
             value="Registrarse"
             onClick={registroUsuario}
+            disabled={!botonRegistro}
           />
         </div>
         <Link to="/">Login</Link>
