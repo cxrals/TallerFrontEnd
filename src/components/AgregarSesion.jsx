@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { agregarSesiones } from "../features/sesionesSlice";
 import { spinnerCargando } from "../features/spinnerSlice";
 import Spinner from "./Spinner";
+import Toast from "./Toast";
 
 const AgregarSesion = () => {
     const movetrack = 'https://movetrack.develotion.com'
@@ -61,6 +62,10 @@ const AgregarSesion = () => {
     const validar = e => {
         campoActividad.current.value && campoTiempo.current.value && campoFecha.current.value ? setBotonAgregar(true) : setBotonAgregar(false);
     }
+
+    const handleToastClose = () => {
+        setMensaje('');
+    };
 
     return (
         <div className="card mt-4">
@@ -123,6 +128,7 @@ const AgregarSesion = () => {
                     </div>
                 </div>
             </div>
+            <Toast message={mensaje} onClose={handleToastClose}/>
         </div>
     );
 };
